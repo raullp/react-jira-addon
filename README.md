@@ -1,4 +1,97 @@
+# How to create a Jira Atlassian add-on
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Create a development Atlassian account
+
+1. Go to `http://go.atlassian.com/cloud-dev` and register your instance.
+
+## Update your app to be installed as Atlassian add-on
+
+1. Create an `attlasian-connect.json` descriptor file that should be available at your project like https://yourdomain.com/attlasian-connect.json
+You can use bellow file as template but make sure to update the key, and other extra information. The `baseUrl` should point to your domain (we will use ngork as a proxy for dev).
+Feel free to validate your descriptor file at https://atlassian-connect-validator.herokuapp.com/validate
+
+```json
+{
+ "name": "Hello World",
+ "description": "Atlassian Connect app",
+ "key": "com.example.myapp",
+ "baseUrl": "https://<placeholder-url>",
+ "vendor": {
+     "name": "Example, Inc.",
+     "url": "http://example.com"
+ },
+ "authentication": {
+     "type": "none"
+ },
+ "apiVersion": 1,
+ "modules": {
+     "generalPages": [
+         {
+             "url": "/index",
+             "key": "index",
+             "location": "system.top.navigation.bar",
+             "name": {
+                 "value": "Greeting"
+             }
+         }
+     ]
+ }
+}
+```
+
+1. Add the `Atlassian Connect JavaScript API` to your `index.html` file. If you don't add this file, the app will lunch in Jira but you will get an error message _App is not responding. Wait or cancel?_.
+
+```html
+<script src="https://connect-cdn.atl-paas.net/all.js"></script>
+```
+
+1. Add the `@atlaskit` (based on [Atlaskit](https://atlaskit.atlassian.com/)) react components in order to use the components that follow the Jira styling. *Note* The typs are not available for TypeScripts. Atlaskit packages https://atlaskit.atlassian.com/packages.
+
+```sh
+yarn add @atlaskit/code
+```
+
+1. Start your application using yarn.
+
+```zh
+yarn start
+```
+
+1. Serve your localhost and make it available to the web using ngrok localhost tunnel.
+
+```sh
+npm install -g ngrok
+ngrok http 3000
+ngrok by @inconshreveable                                       (Ctrl+C to quit)
+                                                                                
+Session Status                online                                            
+Session Expires               7 hours, 59 minutes                               
+Version                       2.3.18                                            
+Region                        United States (us)                                
+Web Interface                 http://127.0.0.1:4040                             
+Forwarding                    http://d0511e80.ngrok.io -> http://localhost:3000 
+Forwarding                    https://d0511e80.ngrok.io -> http://localhost:3000
+                                                                                
+Connections                   ttl     opn     rt1     rt5     p50     p90       
+                              0       0       0.00    0.00    0.00    0.00 
+```
+
+Update the `baseUrl: 'https://d0511e80.ngrok.io'` in the descriptor `atlassian-connect.json`.
+Make sure the `https://d0511e80.ngrok.io` and `https://d0511e80.ngrok.io/atlassian-connect.json` are served by ngrok.
+
+## Deploy and install your app
+
+1. Navigate to Jira in your Atlassian Cloud instance, then choose *Jira settings* (cog icon) > *Apps* > *Manage apps*.
+1. Click *Upload app*.
+1. In the *From this URL* field, provide a link to your app descriptor. This URL is the same as the hosted location of your `atlassian-connect.json` descriptor file. Our example uses the following URL: `https://d0511e80.ngrok.io/atlassian-connect.json`
+1. Click *Upload*. Jira displays the *Installed and ready to go* message when the installation is complete.
+1. Click *Close*.
+1. Verify that your app appears in the *User installed apps* list. For example, if you used Hello World for your app name, then Hello World will appear in the list.
+1. Navigate to the Jira home page. A new item labeled Greeting appears in the sidebar.
+1. Click `Greeting` (1). The Hello World message displays (2).
+
 
 ## Available Scripts
 

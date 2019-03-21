@@ -1,0 +1,24 @@
+{
+    "name": "CodeFabric Hello World",
+    "description": "Atlassian Connect app",
+    "key": "io.codefabric.hello-world-app",
+    "baseUrl": "https://d0511e80.ngrok.io",
+    "vendor": {
+        "name": "Code Fabric LLC.",
+        "url": "http://codefabric.io"
+    },
+    "authentication": {
+        "type": "none"
+    },
+    "apiVersion": 1,
+    "modules": {
+        "generalPages": [{
+            "url": "/index",
+            "key": "index",
+            "location": "system.top.navigation.bar",
+            "name": {
+                "value": "CodeFabric"
+            }
+        }]
+    }
+}

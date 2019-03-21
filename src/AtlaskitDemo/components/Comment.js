@@ -8,7 +8,7 @@ import Comment, {
 } from '@atlaskit/comment';
 import avatarImg from '../../img/ninja-avatar.png';
 
-export default () => (
+export default ({content}) => (
   <div>
     <Comment
       avatar={<Avatar src={avatarImg} label="Atlaskit avatar" size="medium" />}
@@ -18,10 +18,7 @@ export default () => (
       restrictedTo="Restricted to Admins Only"
       time={<CommentTime>30 March, 2018</CommentTime>}
       content={
-        <p>
-          Content goes here. This can include <a href="/link">links</a> and
-          other content.
-        </p>
+        content
       }
       actions={[
         <CommentAction>Reply</CommentAction>,
